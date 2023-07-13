@@ -11,6 +11,8 @@ using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.IO;
 using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 
 //[module:CLSCompliant(true)]
@@ -69,6 +71,43 @@ namespace DGVPrinterHelper //AllocationRequest
             Log(Categories.Info, "********************* New Trace *********************");
         }
 
+        public void shareBill(string url, string billNumber){
+         
+
+            string url = "https://stripe.com/api/endpoint";  // Replace with your URL
+    
+            HttpClient client = new HttpClient();
+            
+            // Create the payload
+            var payload = new
+            {
+                key1 = "value1",
+                key2 = "value2"
+            };
+            
+            // Send the POST request
+            HttpResponseMessage response = await client.PostAsJsonAsync(url, payload);
+            
+            // Check the response status
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("POST request successful.");
+                
+                // Read the response content
+                var responseContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Response: " + responseContent);
+            }
+            else
+            {
+                Console.WriteLine("POST request failed. Status code: " + response.StatusCode);
+            }
+            
+            // Dispose the HttpClient instance
+            client.Dispose();
+    }
+}
+
+        }
         /// <summary>
         /// Log a message, using the provided category
         /// </summary>
